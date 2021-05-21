@@ -1,0 +1,14 @@
+# Auction Sniper
+This project is the code developed from the reading of the book Growing Object-Oriented Software Guided by Tests written by Steve Freeman and Nat Pryce.
+
+## Getting Started
+- Download the OpenFire Server https://www.igniterealtime.org/downloads/
+- Install the OpenFire Server
+- Access http://localhost:9090 to verify that OpenFire server is up
+- Create the following users:
+  
+    | User               | Password |
+    | ------------------ |----------|
+    | sniper             | sniper   |
+    | auction-item-54321 | auction  |
+    | auction-item-65432 | auction  |
