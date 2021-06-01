@@ -5,6 +5,8 @@ This project is the code developed from the reading of the book Growing Object-O
 - Download the OpenFire Server https://www.igniterealtime.org/downloads/
 - Install the OpenFire Server
 - Access http://localhost:9090 to verify that OpenFire server is up
+  - User: admin
+  - Pass: admin
 - Create the following users:
   
     | User               | Password |
@@ -12,3 +14,4 @@ This project is the code developed from the reading of the book Growing Object-O
     | sniper             | sniper   |
     | auction-item-54321 | auction  |
     | auction-item-65432 | auction  |
+- At `server > system properties`, configure the property `xmpp.domain=localhost`

@@ -15,28 +15,24 @@
     </properties>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.igniterealtime.smack/smack -->
         <dependency>
             <groupId>org.igniterealtime.smack</groupId>
             <artifactId>smack</artifactId>
             <version>3.2.1</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.igniterealtime.smack/smackx -->
         <dependency>
             <groupId>org.igniterealtime.smack</groupId>
             <artifactId>smackx</artifactId>
             <version>3.2.1</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.googlecode.windowlicker/windowlicker-core -->
         <dependency>
             <groupId>com.googlecode.windowlicker</groupId>
             <artifactId>windowlicker-core</artifactId>
             <version>r268</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.googlecode.windowlicker/windowlicker-swing -->
         <dependency>
             <groupId>com.googlecode.windowlicker</groupId>
             <artifactId>windowlicker-swing</artifactId>
@@ -45,9 +41,16 @@
 
         <!-- Test -->
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${org.junit.jupiter.api.version}</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jmock</groupId>
+            <artifactId>jmock-junit4</artifactId>
+            <version>2.12.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
