@@ -1,6 +1,7 @@
 package auctionsniper;
 
 import auctionsniper.ui.MainWindow;
+import auctionsniper.ui.SnipersTableModel;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
@@ -28,10 +29,11 @@ public class Main {
     @SuppressWarnings("unsued")
     private Chat notToBeGCd;
 
+    private final SnipersTableModel snipers = new SnipersTableModel();
     private MainWindow ui;
 
     public Main() throws Exception {
-        startUserInterface();
+        SwingUtilities.invokeAndWait(() -> ui = new MainWindow(snipers));
     }
 
     public static void main(String... args) throws Exception {
@@ -39,7 +41,7 @@ public class Main {
         main.joinAuction(connection(args[ARG_HOSTNAME], args[ARG_USERNAME], args[ARG_PASSWORD]), args[ARG_ITEM_ID]);
     }
 
-    private void joinAuction(XMPPConnection connection, String itemId) throws XMPPException {
+    private void joinAuction(XMPPConnection connection, String itemId) {
         disconnectWhenUICloses(connection);
         final Chat chat = connection.getChatManager().createChat(
                 auctionId(itemId, connection),
@@ -51,7 +53,7 @@ public class Main {
         chat.addMessageListener(
                 new AuctionMessageTranslator(
                         connection.getUser(),
-                        new AuctionSniper(auction, new SniperStateDisplayer())
+                        new AuctionSniper(itemId, auction, new SwingThreadSniperListener(snipers))
                 )
         );
         auction.join();
@@ -66,29 +68,17 @@ public class Main {
         });
     }
 
-    public class SniperStateDisplayer implements SniperListener {
-        @Override
-        public void sniperBidding() {
-            showStatus(MainWindow.STATUS_BIDDING);
+    public static class SwingThreadSniperListener implements SniperListener {
+
+        private final SnipersTableModel snipers;
+
+        public SwingThreadSniperListener(SnipersTableModel snipers) {
+            this.snipers = snipers;
         }
 
         @Override
-        public void sniperLost() {
-            showStatus(MainWindow.STATUS_LOST);
-        }
-
-        @Override
-        public void sniperWinning() {
-            showStatus(MainWindow.STATUS_WINNING);
-        }
-
-        @Override
-        public void sniperWon() {
-            showStatus(MainWindow.STATUS_WON);
-        }
-
-        private void showStatus(final String status) {
-            SwingUtilities.invokeLater(() -> ui.showStatus(status));
+        public void sniperStateChanged(SniperSnapshot sniperSnapshot) {
+            SwingUtilities.invokeLater(() -> snipers.sniperStateChanged(sniperSnapshot));
         }
     }
 
@@ -102,9 +92,5 @@ public class Main {
 
     private static String auctionId(String itemId, XMPPConnection connection) {
         return format(AUCTION_ID_FORMAT, itemId, connection.getServiceName());
-    }
-
-    private void startUserInterface() throws Exception {
-        SwingUtilities.invokeAndWait(() -> ui = new MainWindow());
     }
 }
