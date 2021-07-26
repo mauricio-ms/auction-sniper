@@ -12,6 +12,6 @@ This project is the code developed from the reading of the book Growing Object-O
     | User               | Password |
     | ------------------ |----------|
     | sniper             | sniper   |
-    | auction-item-54321 | auction  |
-    | auction-item-65432 | auction  |
+    | auction-item54321 | auction  |
+    | auction-item65432 | auction  |
 - At `server > system properties`, configure the property `xmpp.domain=localhost`

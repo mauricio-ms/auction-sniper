@@ -15,11 +15,11 @@ public class MainWindowTest {
     @Test
     public void makesUserRequestWhenJoinButtonClicked() {
         ValueMatcherProbe<String> buttonProbe = new ValueMatcherProbe<>(
-                equalTo("item-id"), "join request");
+                equalTo("itemId"), "join request");
 
         mainWindow.addUserRequestListener(buttonProbe::setReceivedValue);
 
-        driver.startBiddingFor("item-id");
+        driver.startBiddingFor("itemId");
         driver.check(buttonProbe);
     }
 }
