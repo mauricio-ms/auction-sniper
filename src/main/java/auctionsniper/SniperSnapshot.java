@@ -32,6 +32,10 @@ public class SniperSnapshot {
         this.state = state;
     }
 
+    public boolean isForSameItemAs(SniperSnapshot sniperSnapshot) {
+        return itemId.equals(sniperSnapshot.itemId);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
