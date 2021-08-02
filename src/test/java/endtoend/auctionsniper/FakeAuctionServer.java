@@ -1,10 +1,15 @@
-package auctionsniper;
+package endtoend.auctionsniper;
 
+import auctionsniper.Main;
 import org.hamcrest.Matcher;
 import org.jivesoftware.smack.Chat;
+import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
+
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.String.format;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -70,5 +75,20 @@ public class FakeAuctionServer {
 
     public String getItemId() {
         return itemId;
+    }
+
+    public static class SingleMessageListener implements MessageListener {
+
+        private final ArrayBlockingQueue<Message> messages = new ArrayBlockingQueue<>(1);
+
+        @Override
+        public void processMessage(Chat chat, Message message) {
+            messages.add(message);
+        }
+
+        public void receivesAMessage(Matcher<? super String> messageMatcher) throws InterruptedException {
+            final Message message = messages.poll(5, TimeUnit.SECONDS);
+            assertThat(message, hasProperty("body", messageMatcher));
+        }
     }
 }

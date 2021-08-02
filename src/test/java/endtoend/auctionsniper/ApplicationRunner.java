@@ -1,8 +1,10 @@
-package auctionsniper;
+package endtoend.auctionsniper;
 
+import auctionsniper.Main;
+import auctionsniper.SniperState;
 import auctionsniper.ui.MainWindow;
 
-import static auctionsniper.FakeAuctionServer.XMPP_HOSTNAME;
+import static endtoend.auctionsniper.FakeAuctionServer.XMPP_HOSTNAME;
 import static auctionsniper.SniperState.JOINING;
 import static auctionsniper.ui.SnipersTableModel.textFor;
 

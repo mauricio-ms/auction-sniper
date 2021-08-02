@@ -1,5 +1,6 @@
-package auctionsniper;
+package unit;
 
+import auctionsniper.*;
 import org.hamcrest.FeatureMatcher;
 import org.hamcrest.Matcher;
 import org.jmock.Expectations;

@@ -1,6 +1,7 @@
-package auctionsniper.ui;
+package integration.auctionsniper.ui;
 
-import auctionsniper.AuctionSniperDriver;
+import auctionsniper.ui.MainWindow;
+import endtoend.auctionsniper.AuctionSniperDriver;
 import auctionsniper.SniperPortfolio;
 import com.objogate.wl.swing.probe.ValueMatcherProbe;
 import org.junit.Test;
