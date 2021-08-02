@@ -1,16 +1,21 @@
 package auctionsniper;
 
+import org.jmock.example.announcer.Announcer;
+
 public class AuctionSniper implements AuctionEventListener {
 
-    private final Auction auction;
-    private final SniperListener sniperListener;
+    private final Announcer<SniperListener> listeners = Announcer.to(SniperListener.class);
 
+    private final Auction auction;
     private SniperSnapshot snapshot;
 
-    public AuctionSniper(String itemId, Auction auction, SniperListener sniperListener) {
+    public AuctionSniper(String itemId, Auction auction) {
         this.auction = auction;
-        this.sniperListener = sniperListener;
         snapshot = SniperSnapshot.joining(itemId);
+    }
+
+    public void addSniperListener(SniperListener sniperListener) {
+        listeners.addListener(sniperListener);
     }
 
     @Override
@@ -33,6 +38,10 @@ public class AuctionSniper implements AuctionEventListener {
     }
 
     private void notifyChange() {
-        sniperListener.sniperStateChanged(snapshot);
+        listeners.announce().sniperStateChanged(snapshot);
+    }
+
+    public SniperSnapshot getSnapshot() {
+        return snapshot;
     }
 }
