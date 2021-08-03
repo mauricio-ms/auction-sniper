@@ -3,6 +3,7 @@ package unit.ui;
 import auctionsniper.AuctionSniper;
 import auctionsniper.SniperSnapshot;
 import auctionsniper.SniperState;
+import auctionsniper.UserRequestListener.Item;
 import auctionsniper.ui.Column;
 import auctionsniper.ui.SnipersTableModel;
 import com.objogate.exception.Defect;
@@ -31,7 +32,7 @@ public class SnipersTableModelTest {
     private final Mockery context = new Mockery();
     private final TableModelListener listener = context.mock(TableModelListener.class);
     private final SnipersTableModel model = new SnipersTableModel();
-    private final AuctionSniper sniper = new AuctionSniper(ITEM_ID, null);
+    private final AuctionSniper sniper = new AuctionSniper(new Item(ITEM_ID, 234), null);
 
     @Before
     public void attachModelListener() {
@@ -81,7 +82,7 @@ public class SnipersTableModelTest {
 
     @Test
     public void holdsSnipersInAdditionOrder() {
-        AuctionSniper sniper2 = new AuctionSniper("item 1", null);
+        AuctionSniper sniper2 = new AuctionSniper(new Item("item 1", 345), null);
         context.checking(new Expectations() {{
             ignoring(listener);
         }});
@@ -95,7 +96,7 @@ public class SnipersTableModelTest {
 
     @Test
     public void updatesCorrectRowForSniper() {
-        AuctionSniper sniper2 = new AuctionSniper("item 1", null);
+        AuctionSniper sniper2 = new AuctionSniper(new Item("item 1", 345), null);
         context.checking(new Expectations() {{
             ignoring(listener);
         }});

@@ -8,6 +8,8 @@ import com.objogate.wl.swing.gesture.GesturePerformer;
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
 
+import static auctionsniper.ui.MainWindow.NEW_ITEM_ID_NAME;
+import static auctionsniper.ui.MainWindow.NEW_ITEM_STOP_PRICE_NAME;
 import static com.objogate.wl.swing.matcher.IterableComponentsMatcher.matching;
 import static com.objogate.wl.swing.matcher.JLabelTextMatcher.withLabelText;
 import static java.lang.String.valueOf;
@@ -25,15 +27,16 @@ public class AuctionSniperDriver extends JFrameDriver {
         );
     }
 
-    public void startBiddingFor(String itemId) {
-        itemIdField().replaceAllText(itemId);
+    public void startBiddingFor(String itemId, int stopPrice) {
+        textField(NEW_ITEM_ID_NAME).replaceAllText(itemId);
+        textField(NEW_ITEM_STOP_PRICE_NAME).replaceAllText(String.valueOf(stopPrice));
         bidButton().click();
     }
 
-    private JTextFieldDriver itemIdField() {
-        JTextFieldDriver newItemId = new JTextFieldDriver(this, JTextField.class, named(MainWindow.NEW_ITEM_ID_NAME));
-        newItemId.focusWithMouse();
-        return newItemId;
+    private JTextFieldDriver textField(String textFieldName) {
+        JTextFieldDriver textField = new JTextFieldDriver(this, JTextField.class, named(textFieldName));
+        textField.focusWithMouse();
+        return textField;
     }
 
     private JButtonDriver bidButton() {

@@ -1,6 +1,8 @@
 package auctionsniper;
 
+import auctionsniper.UserRequestListener.Item;
+
 public interface AuctionHouse {
 
-    Auction auctionFor(String itemId);
+    Auction auctionFor(Item item);
 }

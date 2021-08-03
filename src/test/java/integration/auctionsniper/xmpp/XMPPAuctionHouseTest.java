@@ -1,10 +1,11 @@
 package integration.auctionsniper.xmpp;
 
+import auctionsniper.Auction;
+import auctionsniper.AuctionEventListener;
+import auctionsniper.UserRequestListener.Item;
 import auctionsniper.xmpp.XMPPAuctionException;
 import auctionsniper.xmpp.XMPPAuctionHouse;
 import endtoend.auctionsniper.ApplicationRunner;
-import auctionsniper.Auction;
-import auctionsniper.AuctionEventListener;
 import endtoend.auctionsniper.FakeAuctionServer;
 import org.jivesoftware.smack.XMPPException;
 import org.junit.After;
@@ -14,7 +15,7 @@ import org.junit.Test;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 public class XMPPAuctionHouseTest {
 
@@ -35,7 +36,7 @@ public class XMPPAuctionHouseTest {
     public void receivesEventsFromAuctionServerAfterJoining() throws Exception {
         CountDownLatch auctionWasClosed = new CountDownLatch(1);
 
-        Auction auction = auctionHouse.auctionFor(auctionServer.getItemId());
+        Auction auction = auctionHouse.auctionFor(new Item(auctionServer.getItemId(), 567));
         auction.addAuctionEventListener(auctionClosedListener(auctionWasClosed));
 
         auction.join();

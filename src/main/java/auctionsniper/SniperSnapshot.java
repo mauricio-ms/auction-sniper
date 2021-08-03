@@ -1,6 +1,8 @@
 package auctionsniper;
 
-import java.util.Objects;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class SniperSnapshot {
 
@@ -21,6 +23,10 @@ public class SniperSnapshot {
         return new SniperSnapshot(itemId, newLastPrice, lastBid, SniperState.WINNING);
     }
 
+    public SniperSnapshot losing(int newLastPrice) {
+        return new SniperSnapshot(itemId, newLastPrice, lastBid, SniperState.LOSING);
+    }
+
     public SniperSnapshot closed() {
         return new SniperSnapshot(itemId, lastPrice, lastBid, state.whenAuctionClosed());
     }
@@ -37,15 +43,17 @@ public class SniperSnapshot {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SniperSnapshot that = (SniperSnapshot) o;
-        return lastPrice == that.lastPrice && lastBid == that.lastBid && Objects.equals(itemId, that.itemId);
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(itemId, lastPrice, lastBid);
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

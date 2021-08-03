@@ -17,6 +17,18 @@ public class ApplicationRunner {
     private AuctionSniperDriver driver;
 
     public void startBiddingIn(final FakeAuctionServer... auctions) {
+        startSniper();
+        for (FakeAuctionServer auction : auctions) {
+            openBiddingFor(auction, Integer.MAX_VALUE);
+        }
+    }
+
+    public void startBiddingWithStopPrice(FakeAuctionServer auction, int stopPrice) {
+        startSniper();
+        openBiddingFor(auction, stopPrice);
+    }
+
+    private void startSniper() {
         Thread thread = new Thread("Test Application") {
             @Override
             public void run() {
@@ -29,15 +41,16 @@ public class ApplicationRunner {
         };
         thread.setDaemon(true);
         thread.start();
+
         driver = new AuctionSniperDriver(1000);
         driver.hasTitle(MainWindow.APPLICATION_TITLE);
         driver.hasColumnTitles();
+    }
 
-        for (FakeAuctionServer auction : auctions) {
-            String itemId = auction.getItemId();
-            driver.startBiddingFor(itemId);
-            driver.showsSniperStatus(itemId, 0, 0, textFor(JOINING));
-        }
+    private void openBiddingFor(FakeAuctionServer auction, int stopPrice) {
+        String itemId = auction.getItemId();
+        driver.startBiddingFor(itemId, stopPrice);
+        driver.showsSniperStatus(itemId, 0, 0, textFor(JOINING));
     }
 
     public void hasShownSniperIsBidding(FakeAuctionServer auction, int lastPrice, int lastBid) {
@@ -48,8 +61,12 @@ public class ApplicationRunner {
         driver.showsSniperStatus(auction.getItemId(), winningBid, winningBid, textFor(SniperState.WINNING));
     }
 
-    public void showsSniperHasLostAuction() {
-        driver.showsSniperStatus(textFor(SniperState.LOST));
+    public void hasShownSniperIsLosing(FakeAuctionServer auction, int lastPrice, int lastBid) {
+        driver.showsSniperStatus(auction.getItemId(), lastPrice, lastBid, textFor(SniperState.LOSING));
+    }
+
+    public void showsSniperHasLostAuction(FakeAuctionServer auction, int lastPrice, int lastBid) {
+        driver.showsSniperStatus(auction.getItemId(), lastPrice, lastBid, textFor(SniperState.LOST));
     }
 
     public void showsSniperHasWonAuction(FakeAuctionServer auction, int lastPrice) {
