@@ -37,7 +37,7 @@ dependencies {
 
 group = 'com.auctionsniper'
 version = '1.0-SNAPSHOT'
-description = 'auctionsniper'
+description = 'auction-sniper'
 java.sourceCompatibility = JavaVersion.VERSION_16
 
 publishing {
