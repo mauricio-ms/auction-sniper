@@ -1,8 +1,7 @@
-package unit.ui;
+package auctionsniper.ui;
 
 import auctionsniper.SniperSnapshot;
 import auctionsniper.SniperState;
-import auctionsniper.ui.Column;
 import org.junit.Assert;
 import org.junit.Test;
 

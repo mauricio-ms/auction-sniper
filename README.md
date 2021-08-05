@@ -14,4 +14,4 @@ This project is the code developed from the reading of the book Growing Object-O
     | sniper             | sniper   |
     | auction-item54321 | auction  |
     | auction-item65432 | auction  |
-- At `server > system properties`, configure the property `xmpp.domain=localhost`
+- At `server > system properties`, configure the property `auctionsniper.xmpp.domain=localhost`

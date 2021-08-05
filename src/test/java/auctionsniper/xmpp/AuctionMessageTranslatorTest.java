@@ -1,7 +1,6 @@
-package unit.xmpp;
+package auctionsniper.xmpp;
 
 import auctionsniper.AuctionEventListener;
-import auctionsniper.xmpp.AuctionMessageTranslator;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.packet.Message;
 import org.jmock.Expectations;
@@ -10,7 +9,7 @@ import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static endtoend.auctionsniper.ApplicationRunner.SNIPER_ID;
+import static auctionsniper.ApplicationRunner.SNIPER_ID;
 import static auctionsniper.AuctionEventListener.PriceSource;
 
 @RunWith(JMock.class)

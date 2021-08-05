@@ -1,11 +1,9 @@
-package unit.ui;
+package auctionsniper.ui;
 
 import auctionsniper.AuctionSniper;
 import auctionsniper.SniperSnapshot;
 import auctionsniper.SniperState;
 import auctionsniper.UserRequestListener.Item;
-import auctionsniper.ui.Column;
-import auctionsniper.ui.SnipersTableModel;
 import com.objogate.exception.Defect;
 import org.hamcrest.Matcher;
 import org.jmock.Expectations;

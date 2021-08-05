@@ -23,6 +23,34 @@ repositories {
     }
 }
 
+sourceSets {
+    endToEndTest {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+
+    intTest {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+
+        compileClasspath += sourceSets.endToEndTest.output
+        runtimeClasspath += sourceSets.endToEndTest.output
+    }
+
+    test {
+        compileClasspath += sourceSets.endToEndTest.output
+        runtimeClasspath += sourceSets.endToEndTest.output
+    }
+}
+
+configurations {
+    endToEndTestImplementation.extendsFrom implementation
+    endToEndTestRuntimeOnly.extendsFrom runtimeOnly
+
+    intTestImplementation.extendsFrom implementation
+    intTestRuntimeOnly.extendsFrom runtimeOnly
+}
+
 dependencies {
     implementation 'org.igniterealtime.smack:smack:3.2.1'
     implementation 'org.igniterealtime.smack:smackx:3.2.1'
@@ -30,20 +58,30 @@ dependencies {
     implementation 'com.googlecode.windowlicker:windowlicker-swing:r268'
     implementation 'org.jmock:jmock-example:2.12.0'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
+
     testImplementation 'org.hamcrest:hamcrest-all:1.3'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.jmock:jmock-junit4:2.12.0'
 }
 
-group = 'com.auctionsniper'
-version = '1.0-SNAPSHOT'
-description = 'auction-sniper'
 java.sourceCompatibility = JavaVersion.VERSION_16
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            from(components.java)
-        }
-    }
+task endToEndTest(type:Test) {
+    description = 'Runs end-to-end tests.'
+    group = 'verification'
+
+    testClassesDirs = sourceSets.endToEndTest.output.classesDirs
+    classpath = sourceSets.endToEndTest.runtimeClasspath
+    shouldRunAfter test
 }
+
+task integrationTest(type:Test) {
+    description = 'Runs integration tests.'
+    group = 'verification'
+
+    testClassesDirs = sourceSets.intTest.output.classesDirs
+    classpath = sourceSets.intTest.runtimeClasspath
+    shouldRunAfter test
+}
+
+check.dependsOn endToEndTest, integrationTest

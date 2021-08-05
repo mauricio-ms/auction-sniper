@@ -1,10 +1,9 @@
-package integration.auctionsniper.ui;
+package auctionsniper.ui;
 
 import auctionsniper.SniperPortfolio;
 import auctionsniper.UserRequestListener.Item;
-import auctionsniper.ui.MainWindow;
 import com.objogate.wl.swing.probe.ValueMatcherProbe;
-import endtoend.auctionsniper.AuctionSniperDriver;
+import auctionsniper.AuctionSniperDriver;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;

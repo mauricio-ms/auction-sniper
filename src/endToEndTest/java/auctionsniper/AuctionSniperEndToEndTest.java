@@ -1,4 +1,4 @@
-package endtoend.auctionsniper;
+package auctionsniper;
 
 import org.junit.After;
 import org.junit.Test;
