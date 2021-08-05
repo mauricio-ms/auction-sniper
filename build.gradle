@@ -4,7 +4,6 @@
 
 plugins {
     id 'java'
-    id 'maven-publish'
 }
 
 repositories {
@@ -24,31 +23,11 @@ repositories {
 }
 
 sourceSets {
-    endToEndTest {
-        compileClasspath += sourceSets.main.output
-        runtimeClasspath += sourceSets.main.output
-    }
-
-    intTest {
-        compileClasspath += sourceSets.main.output
-        runtimeClasspath += sourceSets.main.output
-
-        compileClasspath += sourceSets.endToEndTest.output
-        runtimeClasspath += sourceSets.endToEndTest.output
-    }
-
     test {
-        compileClasspath += sourceSets.endToEndTest.output
-        runtimeClasspath += sourceSets.endToEndTest.output
+        java {
+            srcDirs = ['src/test/java/unit', 'src/test/java/integration', 'src/test/java/endtoend']
+        }
     }
-}
-
-configurations {
-    endToEndTestImplementation.extendsFrom implementation
-    endToEndTestRuntimeOnly.extendsFrom runtimeOnly
-
-    intTestImplementation.extendsFrom implementation
-    intTestRuntimeOnly.extendsFrom runtimeOnly
 }
 
 dependencies {
@@ -65,23 +44,3 @@ dependencies {
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_16
-
-task endToEndTest(type:Test) {
-    description = 'Runs end-to-end tests.'
-    group = 'verification'
-
-    testClassesDirs = sourceSets.endToEndTest.output.classesDirs
-    classpath = sourceSets.endToEndTest.runtimeClasspath
-    shouldRunAfter test
-}
-
-task integrationTest(type:Test) {
-    description = 'Runs integration tests.'
-    group = 'verification'
-
-    testClassesDirs = sourceSets.intTest.output.classesDirs
-    classpath = sourceSets.intTest.runtimeClasspath
-    shouldRunAfter test
-}
-
-check.dependsOn endToEndTest, integrationTest
