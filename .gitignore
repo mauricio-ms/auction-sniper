@@ -4,4 +4,7 @@
 
 # Compiled Code
 target/
+build/
 
+# Gradle
+.gradle/
