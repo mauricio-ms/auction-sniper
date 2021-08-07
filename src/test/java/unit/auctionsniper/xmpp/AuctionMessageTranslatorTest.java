@@ -19,8 +19,9 @@ public class AuctionMessageTranslatorTest {
 
     private final Mockery context = new Mockery();
     private final AuctionEventListener listener = context.mock(AuctionEventListener.class);
+    private final XMPPFailureReporter failureReporter = context.mock(XMPPFailureReporter.class);
 
-    private final AuctionMessageTranslator translator = new AuctionMessageTranslator(SNIPER_ID, listener);
+    private final AuctionMessageTranslator translator = new AuctionMessageTranslator(SNIPER_ID, listener, failureReporter);
 
     @Test
     public void notifiesAuctionClosedWhenCloseMessageReceived() {
@@ -56,5 +57,59 @@ public class AuctionMessageTranslatorTest {
         message.setBody("SOLVersion: 1.1; Event: PRICE; CurrentPrice: 234; Increment: 5; Bidder: " + SNIPER_ID + ";");
 
         translator.processMessage(UNUSED_CHAT, message);
+    }
+
+    @Test
+    public void notifiesAuctionFailedWhenBadMessageReceived() {
+        String badMessage = "a bad message";
+        expectFailureWithMessage(badMessage);
+
+        translator.processMessage(UNUSED_CHAT, message(badMessage));
+    }
+
+    @Test
+    public void notifiesAuctionFailedWhenEventTypeMissing() {
+        String badMessage = "SOLVersion: 1.1; CurrentPrice: 234; Increment: 5; Bidder: " + SNIPER_ID + ";";
+        expectFailureWithMessage(badMessage);
+
+        translator.processMessage(UNUSED_CHAT, message(badMessage));
+    }
+
+    @Test
+    public void notifiesAuctionFailedWhenCurrentPriceMissing() {
+        String badMessage = "SOLVersion: 1.1; Event: PRICE; Increment: 5; Bidder: " + SNIPER_ID + ";";
+        expectFailureWithMessage(badMessage);
+
+        translator.processMessage(UNUSED_CHAT, message(badMessage));
+    }
+
+    @Test
+    public void notifiesAuctionFailedWhenIncrementMissing() {
+        String badMessage = "SOLVersion: 1.1; Event: PRICE; CurrentPrice: 234; Bidder: " + SNIPER_ID + ";";
+        expectFailureWithMessage(badMessage);
+
+        translator.processMessage(UNUSED_CHAT, message(badMessage));
+    }
+
+    @Test
+    public void notifiesAuctionFailedWhenCurrentBidderMissing() {
+        String badMessage = "SOLVersion: 1.1; Event: PRICE; CurrentPrice: 234; Increment: 5;";
+        expectFailureWithMessage(badMessage);
+
+        translator.processMessage(UNUSED_CHAT, message(badMessage));
+    }
+
+    private Message message(String badMessage) {
+        Message message = new Message();
+        message.setBody(badMessage);
+        return message;
+    }
+
+    private void expectFailureWithMessage(String badMessage) {
+        context.checking(new Expectations() {{
+            oneOf(listener).auctionFailed();
+            oneOf(failureReporter).cannotTranslateMessage(
+                    with(SNIPER_ID), with(badMessage), with(any(Exception.class)));
+        }});
     }
 }

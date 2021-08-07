@@ -30,8 +30,10 @@ public class AuctionSniper implements AuctionEventListener {
     @Override
     public void currentPrice(int price, int increment, PriceSource priceSource) {
         switch (priceSource) {
-            case FromSniper -> snapshot = snapshot.winning(price);
-            case FromOtherBidder -> {
+            case FromSniper:
+                snapshot = snapshot.winning(price);
+                break;
+            case FromOtherBidder:
                 int bid = price + increment;
                 if (item.allowsBid(bid)) {
                     auction.bid(bid);
@@ -39,9 +41,15 @@ public class AuctionSniper implements AuctionEventListener {
                 } else {
                     snapshot = snapshot.losing(price);
                 }
-            }
+                break;
         }
         notifyChange();
+    }
+
+    @Override
+    public void auctionFailed() {
+        snapshot = snapshot.failed();
+        listeners.announce().sniperStateChanged(snapshot);
     }
 
     private void notifyChange() {

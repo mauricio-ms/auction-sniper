@@ -44,7 +44,7 @@ public class SniperLauncherTest {
     }
 
     protected Matcher<AuctionSniper> sniperForItem(Item item) {
-        return new FeatureMatcher<>(equalTo(item.identifier), "sniper with item id", "item") {
+        return new FeatureMatcher<AuctionSniper, String>(equalTo(item.identifier), "sniper with item id", "item") {
             @Override
             protected String featureValueOf(AuctionSniper actual) {
                 return actual.getSnapshot().itemId;
